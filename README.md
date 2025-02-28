@@ -1,63 +1,60 @@
-![Python 3.8 3.9](https://github.com/f1tenth/f1tenth_gym/actions/workflows/ci.yml/badge.svg)
-![Docker](https://github.com/f1tenth/f1tenth_gym/actions/workflows/docker.yml/badge.svg)
-# The F1TENTH Gym environment
+# F1 Tenth Autonomous Navigation
 
-This is the repository of the F1TENTH Gym environment.
+## Overview
+This project focuses on autonomous navigation using the F1 Tenth OpenAI Gym environment. It employs LiDAR-based state representation, reinforcement learning, and weight update mechanisms for efficient decision-making.
 
-This project is still under heavy developement.
+## Environment
+- **Observations**: 1D LiDAR with a 270° field of view (1080 beams).
+- **Actions**: Steering angle and speed.
 
-You can find the [documentation](https://f1tenth-gym.readthedocs.io/en/latest/) of the environment here.
+## State Representation
+- LiDAR data is discretized into a binary 11-bit representation using random binary projection.
+- Observations are divided into 30 bins, with median values extracted and projected into an 11-dimensional binary space.
 
-## Quickstart
-We recommend installing the simulation inside a virtualenv. You can install the environment by running:
+## Action Space
+- **Steering Angle**: 31 discrete angles mapped to a 270° field of view.
+- **Speed**: 10 discrete levels ranging from 0.8 to 2.
 
-```bash
-virtualenv gym_env
-source gym_env/bin/activate
-git clone https://github.com/f1tenth/f1tenth_gym.git
-cd f1tenth_gym
-pip install -e .
-```
+## Reward Function
+- **Progress Reward**: Encourages forward movement along the track.
+- **Centerline Reward**: Penalizes deviation from the track center.
+- **Milestone Reward**: Rewards reaching new track centers.
+- **Collision Reward**: Large negative reward for crashes.
 
-Then you can run a quick waypoint follow example by:
-```bash
-cd examples
-python3 waypoint_follow.py
-```
+## Learning Algorithms
+### SARSA(λ)
+- Temporal Difference (TD) learning with eligibility traces.
+- Updates weight matrix using:
+  ``` math
+  Q(S,A) ← Q(S,A) + α [R + γ Q(S', A') - Q(S,A)] E(S,A)
+  ```
+- Eligibility trace (E) decays over time, prioritizing recent experiences.
 
-A Dockerfile is also provided with support for the GUI with nvidia-docker (nvidia GPU required):
-```bash
-docker build -t f1tenth_gym_container -f Dockerfile .
-docker run --gpus all -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix f1tenth_gym_container
-````
-Then the same example can be ran.
+### BTSP (Behavioral Time Scale Plasticity)
+- Uses **Eligibility Trace (ET)**. Encodes state representation from LiDAR.
+- **Instructive Signal (IS)** from down-sampled LiDAR distances guides weight updates.
+- Weight updates follow:
+  ```math
+  Q[s, a] += R
+  ```
+  ```math
+  \delta = (Q_{max} - Q) \odot (ET * IS)
+  ```
+  ```math
+  Q += \eta \cdot \delta
+  ```
+  ```math
+  ET *= \lambda_1 ET
+  ```
+  ```math
+  IS *= \lambda_2 IS
+  ```
 
-## Known issues
-- Library support issues on Windows. You must use Python 3.8 as of 10-2021
-- On MacOS Big Sur and above, when rendering is turned on, you might encounter the error:
-```
-ImportError: Can't find framework /System/Library/Frameworks/OpenGL.framework.
-```
-You can fix the error by installing a newer version of pyglet:
-```bash
-$ pip3 install pyglet==1.5.20
-```
-And you might see an error similar to
-```
-f110-gym 0.2.1 requires pyglet<1.5, but you have pyglet 1.5.20 which is incompatible.
-```
-which could be ignored. The environment should still work without error.
+## Implementation
+1. **State Representation**: Convert LiDAR data to a binary format.
+2. **Reward Calculation**: Compute rewards based on progress, track adherence, milestones, and collisions.
+3. **Weight Updates**: Apply SARSA(λ) or BTSP to adjust state-action weights.
 
-## Citing
-If you find this Gym environment useful, please consider citing:
-
-```
-@inproceedings{okelly2020f1tenth,
-  title={F1TENTH: An Open-source Evaluation Environment for Continuous Control and Reinforcement Learning},
-  author={O’Kelly, Matthew and Zheng, Hongrui and Karthik, Dhruv and Mangharam, Rahul},
-  booktitle={NeurIPS 2019 Competition and Demonstration Track},
-  pages={77--89},
-  year={2020},
-  organization={PMLR}
-}
-```
+## Future Work
+- Improve discretization techniques for better state representation.
+- Optimize action selection strategies for more efficient navigation.
