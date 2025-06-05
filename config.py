@@ -77,7 +77,7 @@ class Config:
     
     # Training parameters
     ACTION_THRESHOLD_DECAY = 0.9998
-    CHECKPOINT_INTERVAL = 10
+    CHECKPOINT_INTERVAL = 500
     MAP_SWITCH_COLLISIONS = None  # Set based on track_center_counter
     
     # Projection matrix parameters

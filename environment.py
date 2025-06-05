@@ -54,7 +54,7 @@ class EnvironmentManager:
         self.map_centers = file.values[:, :2]
         self.track_width = file.loc[0, 'w_r'] + file.loc[0, 'w_l']
         self.track_headings = self.calculate_track_headings(self.map_centers)
-        self.track_center_counter =  20 #self.map_centers.shape[0]
+        self.track_center_counter =  self.map_centers.shape[0]
         
     def calculate_track_headings(self, track_centers, window_size=5):
         """
