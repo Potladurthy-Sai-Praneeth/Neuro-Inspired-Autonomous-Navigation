@@ -245,7 +245,7 @@ class F1TenthTrainer:
             self.curr_state = self.next_state
             
             # Render environment
-            self.env_manager.env.render(mode='human')
+            # self.env_manager.env.render(mode='human')
             
     def _handle_collision(self, start_time):
         """Handle collision event and environment reset."""

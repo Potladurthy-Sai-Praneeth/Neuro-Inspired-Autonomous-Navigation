@@ -77,7 +77,7 @@ class Config:
     
     # Training parameters
     ACTION_THRESHOLD_DECAY = 0.9998
-    CHECKPOINT_INTERVAL = 500
+    CHECKPOINT_INTERVAL = 10
     MAP_SWITCH_COLLISIONS = None  # Set based on track_center_counter
     
     # Projection matrix parameters
@@ -134,7 +134,7 @@ class Config:
             tuple: (train_maps, test_maps)
         """
         if train_maps is None:
-            train_maps = ['Shanghai', 'Nuerburgring', 'Montreal', 'Austin', 'Spa','Hockenheim','Mexico City']
+            train_maps = ['Shanghai', 'Nuerburgring', 'Montreal', 'Austin', 'Hockenheim','Mexico City'] # 'Spa'
         
         test_maps = [name for name in map_names if name not in train_maps]
         return train_maps, test_maps

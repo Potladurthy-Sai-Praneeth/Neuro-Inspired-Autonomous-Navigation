@@ -141,7 +141,7 @@ class SARSAAlgorithm:
         Returns:
             tuple: Next action indices (angle_idx, speed_idx).
         """
-        next_angle_idx, next_speed_idx = action_selector.select_action(next_state)
+        next_angle_idx, next_speed_idx = action_selector.select_action(next_state,weights)
         delta = (reward + self.discount_factor * weights[next_state, next_angle_idx, next_speed_idx] - 
                 weights[curr_state, angle_idx, speed_idx])
         
