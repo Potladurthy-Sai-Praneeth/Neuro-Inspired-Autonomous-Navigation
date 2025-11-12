@@ -126,3 +126,5 @@ run_inference(algorithm='BTSP', weights_file='weights.npy')
 ### `explanation.md`
 - Detailed explanation of the algorithms, reward functions, and weight updates.
 
+# Demo
+[Demo](https://drive.google.com/file/d/1pCYcmITV0wzrNcmtZDqXbTRRGbY_bX7R/view)
