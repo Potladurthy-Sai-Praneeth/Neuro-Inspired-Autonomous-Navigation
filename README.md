@@ -127,4 +127,4 @@ run_inference(algorithm='BTSP', weights_file='weights.npy')
 - Detailed explanation of the algorithms, reward functions, and weight updates.
 
 # Demo
-[Demo](https://drive.google.com/file/d/1pCYcmITV0wzrNcmtZDqXbTRRGbY_bX7R/view)
+[Demo](https://drive.google.com/file/d/1LvSb6tewqvl4GqI8Jck1LXfjrvidwryx/view?usp=sharing)
